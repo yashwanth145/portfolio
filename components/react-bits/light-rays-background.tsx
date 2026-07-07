@@ -19,6 +19,7 @@ type LightRaysBackgroundProps = {
   raysSpeed?: number;
   lightSpread?: number;
   rayLength?: number;
+  intensity?: number;
   followMouse?: boolean;
   mouseInfluence?: number;
 };
@@ -70,6 +71,7 @@ type Uniforms = {
   raysSpeed: { value: number };
   lightSpread: { value: number };
   rayLength: { value: number };
+  intensity: { value: number };
   mousePos: { value: Vec2 };
   mouseInfluence: { value: number };
 };
@@ -78,8 +80,9 @@ export function LightRaysBackground({
   raysOrigin = "top-right",
   raysColor = DEFAULT_COLOR,
   raysSpeed = 0.85,
-  lightSpread = 0.9,
-  rayLength = 1.8,
+  lightSpread = 2.4,
+  rayLength = 3.2,
+  intensity = 1,
   followMouse = false,
   mouseInfluence = 0.08,
 }: LightRaysBackgroundProps) {
@@ -144,6 +147,7 @@ export function LightRaysBackground({
       uniform float raysSpeed;
       uniform float lightSpread;
       uniform float rayLength;
+      uniform float intensity;
       uniform vec2 mousePos;
       uniform float mouseInfluence;
 
@@ -156,12 +160,7 @@ export function LightRaysBackground({
 
         float distance = length(sourceToCoord);
         float maxDistance = iResolution.x * rayLength;
-        float lengthFalloff = clamp((maxDistance - distance) / maxDistance, 0.0, 1.0);
-        float fadeFalloff = clamp(
-          (iResolution.y * 1.1 - distance) / (iResolution.y * 1.1),
-          0.35,
-          1.0
-        );
+        float lengthFalloff = clamp((maxDistance - distance) / maxDistance, 0.25, 1.0);
 
         float baseStrength = clamp(
           (0.45 + 0.15 * sin(cosAngle * seedA + iTime * speed)) +
@@ -170,7 +169,7 @@ export function LightRaysBackground({
           1.0
         );
 
-        return baseStrength * lengthFalloff * fadeFalloff * spreadFactor;
+        return baseStrength * lengthFalloff * spreadFactor;
       }
 
       void main() {
@@ -186,10 +185,9 @@ export function LightRaysBackground({
         vec4 rays1 = vec4(1.0) * rayStrength(rayPos, finalRayDir, coord, 36.2214, 21.11349, 1.5 * raysSpeed);
         vec4 rays2 = vec4(1.0) * rayStrength(rayPos, finalRayDir, coord, 22.3991, 18.0234, 1.1 * raysSpeed);
 
-        vec4 color = rays1 * 0.55 + rays2 * 0.42;
-        float vignette = 1.0 - smoothstep(0.0, iResolution.y, coord.y) * 0.25;
-        color.rgb *= vignette * raysColor;
-        gl_FragColor = vec4(color.rgb, color.a * 0.95);
+        vec4 color = (rays1 * 0.6 + rays2 * 0.48) * intensity;
+        color.rgb *= raysColor;
+        gl_FragColor = vec4(color.rgb, min(color.a, 1.0));
       }
     `;
 
@@ -202,6 +200,7 @@ export function LightRaysBackground({
       raysSpeed: { value: raysSpeed },
       lightSpread: { value: lightSpread },
       rayLength: { value: rayLength },
+      intensity: { value: intensity },
       mousePos: { value: [0.5, 0.5] },
       mouseInfluence: { value: followMouse ? mouseInfluence : 0 },
     };
@@ -274,7 +273,7 @@ export function LightRaysBackground({
       cleanupRef.current?.();
       cleanupRef.current = null;
     };
-  }, [followMouse, isVisible, lightSpread, mouseInfluence, rayLength, raysColor, raysOrigin, raysSpeed]);
+  }, [followMouse, intensity, isVisible, lightSpread, mouseInfluence, rayLength, raysColor, raysOrigin, raysSpeed]);
 
   useEffect(() => {
     const uniforms = uniformsRef.current;
@@ -286,6 +285,7 @@ export function LightRaysBackground({
     uniforms.raysSpeed.value = raysSpeed;
     uniforms.lightSpread.value = lightSpread;
     uniforms.rayLength.value = rayLength;
+    uniforms.intensity.value = intensity;
     uniforms.mouseInfluence.value = followMouse ? mouseInfluence : 0;
 
     const { clientWidth, clientHeight } = container;
@@ -296,7 +296,7 @@ export function LightRaysBackground({
     );
     uniforms.rayPos.value = anchor;
     uniforms.rayDir.value = dir;
-  }, [followMouse, lightSpread, mouseInfluence, rayLength, raysColor, raysOrigin, raysSpeed]);
+  }, [followMouse, intensity, lightSpread, mouseInfluence, rayLength, raysColor, raysOrigin, raysSpeed]);
 
   useEffect(() => {
     if (!followMouse) return;
