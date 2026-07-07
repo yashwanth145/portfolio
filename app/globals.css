@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Magneto";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://fonts.cdnfonts.com/s/14886/Magneto%20Bold.woff") format("woff");
+}
+
+:root {
+  --background: #030303;
+  --foreground: #f4f4f5;
+  --muted: #a1a1aa;
+  --surface: rgba(10, 10, 10, 0.72);
+  --honey: #e8a838;
+  --honey-light: #f5d78e;
+  --honey-glow: #ffd98a;
+  --honey-deep: #f5d78e;
+  --purple: #a855f7;
+  --purple-light: #c084fc;
+  --border: rgba(168, 85, 247, 0.22);
+  --card: rgba(8, 8, 8, 0.72);
+  --card-foreground: #fafafa;
+  --card-muted: #a1a1aa;
+  --font-magneto: "Magneto", Impact, sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-honey: var(--honey);
+  --color-honey-light: var(--honey-light);
+  --color-honey-glow: var(--honey-glow);
+  --color-honey-deep: var(--honey-deep);
+  --color-purple: var(--purple);
+  --color-purple-light: var(--purple-light);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-card-muted: var(--card-muted);
+  --font-sans: var(--font-body);
+  --font-magneto: var(--font-magneto);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+body::selection {
+  background: rgba(168, 85, 247, 0.35);
+  color: #fff;
+}
+
+.font-magneto {
+  font-family: var(--font-magneto);
+  letter-spacing: 0.02em;
+}
+
+.honey-card {
+  background: rgba(8, 8, 8, 0.84);
+  color: var(--card-foreground);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  transition:
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
+}
+
+.honey-card:hover {
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.honey-card .card-muted {
+  color: var(--card-muted);
+}
+
+.honey-glow-text {
+  background: linear-gradient(135deg, #f5d78e, #e8a838, #c084fc, #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.honey-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple-light), var(--honey-light), transparent);
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.shiny-text {
+  animation: shine 4s linear infinite;
+}
