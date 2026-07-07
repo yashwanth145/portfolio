@@ -53,7 +53,7 @@ export function LearningAreasGrid({
                   <span
                     key={item}
                     className={cn(
-                      "rounded-full border border-honey/20 bg-black/40 text-honey-light",
+                      "rounded-full border border-purple/25 bg-white/5 text-purple-light",
                       compact ? "px-2.5 py-1 text-xs" : "px-3 py-1.5 text-sm",
                     )}
                   >

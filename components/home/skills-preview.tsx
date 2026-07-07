@@ -20,10 +20,10 @@ export function SkillsPreview() {
             description="From full-stack product development to AI, cybersecurity, embedded systems, and cloud-native architectures."
           />
           <Link
-            href="/about"
+            href="/skills"
             className="inline-flex shrink-0 items-center gap-2 text-sm text-purple-light transition hover:text-purple"
           >
-            View full profile
+            View all skills
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -38,7 +38,7 @@ export function SkillsPreview() {
                 {area.items.slice(0, 4).map((item) => (
                   <span
                     key={item}
-                    className="rounded-full border border-honey/20 bg-black/40 px-2.5 py-1 text-xs text-honey-light"
+                    className="rounded-full border border-purple/25 bg-white/5 px-2.5 py-1 text-xs text-purple-light"
                   >
                     {item}
                   </span>

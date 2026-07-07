@@ -2,10 +2,12 @@
 
 import { motion } from "framer-motion";
 
-import { LearningAreasGrid } from "@/components/portfolio/learning-areas-grid";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
 import { SpotlightCard } from "@/components/react-bits/spotlight-card";
 import { PageHeading } from "@/components/ui/page-heading";
-import { aboutCards, journey, learningAreas } from "@/lib/data";
+import { aboutCards, journey } from "@/lib/data";
 
 export default function AboutPage() {
   return (
@@ -75,12 +77,22 @@ export default function AboutPage() {
       </div>
 
       <div className="mt-16">
-        <PageHeading
-          eyebrow="Skills"
-          title="Things I have learnt."
-          description="Languages, systems, security, AI, and engineering foundations explored across my learning journey."
-        />
-        <LearningAreasGrid areas={learningAreas} className="mt-10" />
+        <SpotlightCard className="flex flex-col items-start justify-between gap-6 p-6 sm:flex-row sm:items-center">
+          <div>
+            <p className="text-xs tracking-[0.28em] text-purple-light uppercase">Skills</p>
+            <h2 className="font-magneto mt-2 text-2xl text-foreground">Explore my full technical stack</h2>
+            <p className="mt-2 max-w-xl text-sm leading-7 text-muted">
+              Languages, AI, cybersecurity, networking, embedded systems, cloud, and more — all in one place.
+            </p>
+          </div>
+          <Link
+            href="/skills"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-purple/30 bg-purple/10 px-5 py-2.5 text-sm text-purple-light transition hover:border-purple-light/50 hover:text-foreground"
+          >
+            View skills
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </SpotlightCard>
       </div>
     </div>
   );
